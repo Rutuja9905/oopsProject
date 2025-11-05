@@ -1,29 +1,42 @@
 #include <iostream>
 #include <iomanip>
+using namespace std;
 
 class Time {
-public:
     int hours;
     int minutes;
 
-    // Overload >> to input hours and minutes
-    friend std::istream& operator>>(std::istream& in, Time& t) {
-        in >> t.hours >> t.minutes;
+public:
+    Time() : hours(0), minutes(0) {}
+
+    // Friend function to overload >> for input
+    friend istream &operator>>(istream &in, Time &t) {
+        cout << "Enter hours: ";
+        in >> t.hours;
+        cout << "Enter minutes: ";
+        in >> t.minutes;
+
+        // Adjust if minutes exceed 60
+        if (t.minutes >= 60) {
+            t.hours += t.minutes / 60;
+            t.minutes = t.minutes % 60;
+        }
+
         return in;
     }
 
-    // Overload << to output time in hh:mm format
-    friend std::ostream& operator<<(std::ostream& out, const Time& t) {
-        out << std::setw(2) << std::setfill('0') << t.hours << ":"
-            << std::setw(2) << std::setfill('0') << t.minutes;
+    // Friend function to overload << for output
+    friend ostream &operator<<(ostream &out, const Time &t) {
+        out << setfill('0') << setw(2) << t.hours << ":"
+            << setfill('0') << setw(2) << t.minutes;
         return out;
     }
 };
 
 int main() {
-    Time t;
-    std::cout << "Enter hours and minutes separated by space: ";
-    std::cin >> t;
-    std::cout << "Time is: " << t << std::endl;
+    Time t1;
+    cin >> t1;
+    cout << "\nFormatted Time is: " << t1 << endl;
     return 0;
 }
+
