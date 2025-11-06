@@ -2,43 +2,52 @@
 using namespace std;
 
 class Number {
+private:
     int value;
 
 public:
+    // Constructor
     Number(int v = 0) {
         value = v;
     }
-    Number operator++() {
-        value += 100;
-        return *this;
-    }
 
-    friend Number operator++(Number &obj, int);
-
+    // Display function
     void display() {
-        cout << "Value: " << value << endl;
+        cout << "Value = " << value << endl;
     }
+
+    // Overload ++ using member function (prefix)
+    void operator++() {
+        value = value + 100;
+    }
+
+    // Overload ++ using friend function (postfix)
+    friend void operator++(Number &n, int);
 };
 
-Number operator++(Number &obj, int) {
-    Number temp = obj;
-    obj.value += 100;
-    return temp;
+// Friend function definition
+void operator++(Number &n, int) { // postfix dummy int
+    n.value = n.value + 100;
 }
 
 int main() {
-    Number n1(200);
+    Number n1(200), n2(500);
 
-    cout << "Initial: ";
+    cout << "--- Using Member Function (Prefix) ---" << endl;
+    cout << "Before increment: ";
     n1.display();
 
-    ++n1; 
-    cout << "After pre-increment (++n1): ";
+    ++n1; // calls member function
+    cout << "After increment: ";
     n1.display();
 
-    n1++; 
-    cout << "After post-increment (n1++): ";
-    n1.display();
+    cout << "\n--- Using Friend Function (Postfix) ---" << endl;
+    cout << "Before increment: ";
+    n2.display();
+
+    n2++; // calls friend function
+    cout << "After increment: ";
+    n2.display();
 
     return 0;
-    }
+}
